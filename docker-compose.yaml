@@ -1,0 +1,29 @@
+version: "3"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    working_dir: "/go/src/github.com/kkjoker/recipe/"
+    volumes:
+      - $GOPATH/src:/go/src
+    command: bash -c "/go/wait-for-it/wait-for-it.sh db:3306 -- go run ./cmd/main.go"
+    ports:
+      - "3000:3000"
+    networks:
+      - my_network
+  db:
+    image: mysql:5.7
+    environment:
+    - MYSQL_DATABASE=recipe
+    - MYSQL_ROOT_PASSWORD=root
+    command: >
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+    ports:
+      - 3306:3306
+    networks:
+      - my_network
+networks:
+  my_network:
+    external: false
