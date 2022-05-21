@@ -1,7 +1,7 @@
 package infra
 
 import(
-	"github.com/kkjoker/recipe/controller"
+	"github.com/kkjoker/cooking/controller"
 
 	"github.com/gin-gonic/gin"
 )

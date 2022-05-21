@@ -2,7 +2,7 @@ package model
 
 import "time"
 
-// User represents a row from 'recipe.users'.
+// User represents a row from 'cooking.users'.
 type User struct {
 	ID        int       `json:"id"` // id
 	Name      string    `json:"name"` // name

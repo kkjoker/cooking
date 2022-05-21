@@ -1,4 +1,4 @@
-module github.com/kkjoker/recipe
+module github.com/kkjoker/cooking
 
 go 1.18
 

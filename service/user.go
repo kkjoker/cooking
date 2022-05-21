@@ -1,12 +1,10 @@
 package service
 
-import (
-	"log"
-	 
+import (	 
     "github.com/gin-gonic/gin"
 
-    "github.com/kkjoker/recipe/library/rdbms"
-    "github.com/kkjoker/recipe/model"
+    "github.com/kkjoker/cooking/library/rdbms"
+    "github.com/kkjoker/cooking/model"
 )
 
 type Service struct{}
@@ -34,8 +32,6 @@ func (s Service) CreateModel(c *gin.Context) (*model.User, error) {
 
 	db := rdbms.GetDB()
 	
-	log.Println(u.Name)
-	log.Println("---1---")
 	db = db.Create(&u)
 
     return &u, rdbms.GetDBError(db)
@@ -48,11 +44,6 @@ func (s Service) GetByID(id string) (*model.User, error) {
 	
 	db := rdbms.GetDB()
 
-	if db == nil {
-		log.Println("DBが空です")
-	}
-	log.Println("---2---")
-	log.Println(id)
 	db = db.Where("id = ?", id)
 	db = db.First(&u)
 

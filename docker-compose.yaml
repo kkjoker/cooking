@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: ./docker/Dockerfile
-    working_dir: "/go/src/github.com/kkjoker/recipe/"
+    working_dir: "/go/src/github.com/kkjoker/cooking/"
     volumes:
       - $GOPATH/src:/go/src
     command: bash -c "/go/wait-for-it/wait-for-it.sh db:3306 -- go run ./cmd/main.go"
@@ -15,7 +15,7 @@ services:
   db:
     image: mysql:5.7
     environment:
-    - MYSQL_DATABASE=recipe
+    - MYSQL_DATABASE=cooking
     - MYSQL_ROOT_PASSWORD=root
     command: >
       --character-set-server=utf8mb4

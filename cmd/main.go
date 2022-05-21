@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/kkjoker/recipe/library/rdbms"
-	"github.com/kkjoker/recipe/infra"
+	"github.com/kkjoker/cooking/library/rdbms"
+	"github.com/kkjoker/cooking/infra"
 )
 
 func main() {

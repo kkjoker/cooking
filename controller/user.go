@@ -3,7 +3,7 @@ package controller
 import (
     "fmt"
 
-	"github.com/kkjoker/recipe/service"
+	"github.com/kkjoker/cooking/service"
     "github.com/gin-gonic/gin"
 )
 

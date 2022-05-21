@@ -7,6 +7,6 @@ RUN git clone https://github.com/vishnubob/wait-for-it && \
     go install bitbucket.org/liamstask/goose/cmd/goose@latest
 
 
-WORKDIR "/go/src/gihub.com/kkjoker/recipe/"
+WORKDIR "/go/src/gihub.com/kkjoker/cooking/"
 COPY go.mod go.sum ./
 RUN go mod download
