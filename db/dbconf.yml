@@ -1,0 +1,3 @@
+local:
+    driver: mymysql
+    open: tcp:db:3306*recipe/root/root

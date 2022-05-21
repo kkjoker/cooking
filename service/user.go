@@ -1,75 +1,90 @@
 package service
 
 import (
-	"time"
-	
-	"github.com/kkjoker/recipe/model"
+	"log"
+	 
+    "github.com/gin-gonic/gin"
 
-	"github.com/go-xorm/xorm"
+    "github.com/kkjoker/recipe/library/rdbms"
+    "github.com/kkjoker/recipe/model"
 )
 
-type Users struct {
-	engine *xorm.Engine
+type Service struct{}
+
+// GetAll 全ユーザ取得
+func (s Service) GetAll() ([]*model.User, error) {
+    
+	u := []*model.User{}
+	
+	db := rdbms.GetDB()
+	
+	db = db.Find(&u)
+
+	return u, rdbms.GetDBError(db)
 }
 
-func NewUsers(engine *xorm.Engine) *Users {
-	u := Users{
-		engine: engine,
-	}
-	return &u
+// CreateModel User作成
+func (s Service) CreateModel(c *gin.Context) (*model.User, error) {
+    
+    u := model.User{}
+
+    if err := c.BindJSON(&u); err != nil {
+        return &u, err
+    }
+
+	db := rdbms.GetDB()
+	
+	log.Println(u.Name)
+	log.Println("---1---")
+	db = db.Create(&u)
+
+    return &u, rdbms.GetDBError(db)
 }
 
-func (u *Users) Create(input *model.UserInput) (*model.Users, error) {
-	now := time.Now()
-	user := model.Users{
-		Name:      input.Name,
-		Address:   input.Address,
-		CreatedAt: now,
-		UpdatedAt: now,
-	}
-	_, err := u.engine.Table("users").Insert(&user)
-	if err != nil {
-		return nil, err
-	}
+// GetByID User取得
+func (s Service) GetByID(id string) (*model.User, error) {
+	
+	u := model.User{}
+	
+	db := rdbms.GetDB()
 
-	return &user, nil
+	if db == nil {
+		log.Println("DBが空です")
+	}
+	log.Println("---2---")
+	log.Println(id)
+	db = db.Where("id = ?", id)
+	db = db.First(&u)
+
+    return &u, rdbms.GetDBError(db)
 }
 
-func (u *Users) GetOne(userID int) (*model.Users, error) {
-	user := model.Users{}
-	_, err := u.engine.Table("users").Where("id = ?", userID).Get(&user)
-	if err != nil {
-		return nil, err
-	}
-	return &user, nil
+// UpdateByID User更新
+func (s Service) UpdateByID(id string, c *gin.Context) (*model.User, error) {
+    
+    u := model.User{}
+
+	if err := c.BindJSON(&u); err != nil {
+        return &u, err
+    }
+
+	db := rdbms.GetDB()
+	
+	db = db.Where("id = ?", id)
+    db = db.Save(&u)
+
+    return &u, rdbms.GetDBError(db)
 }
 
-func (u *Users) GetAll() ([]*model.Users, error) {
-	users := []*model.Users{}
-	err := u.engine.Table("users").Find(&users)
-	if err != nil {
-		return nil, err
-	}
-	return users, nil
-}
+// DeleteByID User削除
+func (s Service) DeleteByID(id string) error {
+    
+    u := model.User{}
 
-func (u *Users) Update(input *model.UserInput, userID int) (*model.Users, error) {
-	user := model.Users{
-		Name:    input.Name,
-		Address: input.Address,
-	}
-	_, err := u.engine.Table("users").Where("id = ?", userID).Update(&user)
-	if err != nil {
-		return nil, err
-	}
-	return u.GetOne(userID)
-}
+	db := rdbms.GetDB()
 
-func (u *Users) Delete(userID int) error {
-	user := model.Users{}
-	_, err := u.engine.Table("users").Where("id = ?", userID).Delete(&user)
-	if err != nil {
-		return err
-	}
-	return nil
+	db = db.Where("id = ?", id)
+	db = db.Delete(&u)
+
+    return rdbms.GetDBError(db)
 }

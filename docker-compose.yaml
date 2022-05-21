@@ -9,7 +9,7 @@ services:
       - $GOPATH/src:/go/src
     command: bash -c "/go/wait-for-it/wait-for-it.sh db:3306 -- go run ./cmd/main.go"
     ports:
-      - "3000:3000"
+      - "8080:8080"
     networks:
       - my_network
   db:
